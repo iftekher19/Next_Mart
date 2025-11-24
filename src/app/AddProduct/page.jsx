@@ -1,6 +1,6 @@
 "use client"
-import ProtectedRoute from "@/src/Components/ProtectedRoute"
-import ProductForm from "@/src/Components/ProductForm"
+import ProtectedRoute from "../../Components/ProtectedRoute"
+import ProductForm from "../../Components/ProductForm"
 
 export default function AddProductPage() {
   return (

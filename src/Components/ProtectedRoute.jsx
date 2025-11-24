@@ -1,17 +1,26 @@
-"use client"
-import { useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+"use client";
+
+import { useRouter } from "next/navigation";
+import useUser from "../utils/useUser";  // your hook from earlier
 
 export default function ProtectedRoute({ children }) {
-  const { status } = useSession()
-  const router = useRouter()
+  const { user, loading } = useUser();
+  const router = useRouter();
 
-  useEffect(() => {
-    if (status === "unauthenticated") router.push("/auth/Login")
-  }, [status, router])
+  // while Firebase is still checking user state
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p>Checking authentication...</p>
+      </div>
+    );
+  }
 
-  if (status === "loading") return <p className="text-center mt-10">Loading...</p>
+  if (!user) {
+    router.push("/login");
+    return null;
+  }
 
-  return <>{children}</>
+  // ✅ User logged‑in → show protected content
+  return <>{children}</>;
 }

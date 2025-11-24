@@ -1,38 +1,81 @@
-"use client"
-import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
+"use client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import useUser from "../utils/useUser";
 
 export default function Navbar() {
-  const { data: session } = useSession()
+  const { user, loading, logout } = useUser();
+  const router = useRouter();
 
   return (
-    <nav className="sticky top-0 bg-white border-b shadow-sm z-50">
-      <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
-        <Link href="/" className="text-xl font-bold text-blue-600">NextMart</Link>
-        <div className="hidden md:flex gap-6 items-center">
-          <Link href="/">Home</Link>
-          <Link href="/About">About</Link>
-          <Link href="/Products">Products</Link>
-          {session && (
+    <nav className="sticky top-0 z-50 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 shadow-md">
+      <div className=" max-w-6xl mx-auto flex justify-between items-center p-4 text-white">
+        <Link href="/" className="flex gap-2 text-2xl font-bold tracking-wide">
+        <img src="/assets/nextmart.png" alt="NextMart logo" className="w-8 h-8 object-contain" />
+          NextMart
+        </Link>
+
+        <div className="flex items-center gap-6 font-medium">
+          <Link href="/" className="hover:text-lime-300 transition">Home</Link>
+          <Link href="/About" className="hover:text-lime-300 transition">About</Link>
+          <Link href="/Products" className="hover:text-lime-300 transition">Products</Link>
+          {user && (
             <>
-              <Link href="/AddProduct">Add</Link>
-              <Link href="/ManageProducts">Manage</Link>
+              <Link href="/AddProduct" className="hover:text-lime-300 transition">Add</Link>
+              <Link href="/ManageProducts" className="hover:text-lime-300 transition">Manage</Link>
             </>
           )}
         </div>
-        {!session ? (
-          <button onClick={() => signIn()} className="bg-blue-600 text-white px-4 py-1 rounded">Login</button>
-        ) : (
-          <div className="relative group">
-            <button className="px-3 py-1 bg-gray-100 rounded">{session.user.name}</button>
-            <div className="absolute right-0 hidden group-hover:block bg-white border rounded-md shadow-lg mt-2 w-48">
-              <Link href="/AddProduct" className="block px-3 py-1 hover:bg-gray-100">Add Product</Link>
-              <Link href="/ManageProducts" className="block px-3 py-1 hover:bg-gray-100">Manage</Link>
-              <button onClick={() => signOut()} className="block text-left w-full px-3 py-1 hover:bg-gray-100 text-red-500">Logout</button>
+
+        {/* Right section */}
+        <div>
+          {loading ? (
+            <span className="italic text-lime-200">Loading...</span>
+          ) : user ? (
+            <div className="relative group">
+              <button className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full">
+                <img
+                  src={user.photoURL}
+                  alt="user"
+                  className="w-6 h-6 rounded-full border border-white/30"
+                />
+                <span className="capitalize">{user.displayName?.split(" ")[0]}</span>
+              </button>
+
+              <div className="absolute right-0 hidden group-hover:block mt-2 bg-white text-gray-700 rounded shadow-lg w-52">
+                <p className="px-3 py-2 text-sm border-b text-gray-500">
+                  {user.email}
+                </p>
+                <Link
+                  href="/AddProduct"
+                  className="block px-3 py-2 hover:bg-gray-100"
+                >
+                  Add Product
+                </Link>
+                <Link
+                  href="/ManageProducts"
+                  className="block px-3 py-2 hover:bg-gray-100"
+                >
+                  Manage Products
+                </Link>
+                <button
+                  onClick={logout}
+                  className="block w-full text-left px-3 py-2 text-red-600 hover:bg-gray-100"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          ) : (
+            <button
+              onClick={() => router.push("/login")}
+              className="bg-white text-emerald-700 font-medium px-4 py-1.5 rounded-full hover:bg-lime-100 transition"
+            >
+              Login
+            </button>
+          )}
+        </div>
       </div>
     </nav>
-  )
+  );
 }

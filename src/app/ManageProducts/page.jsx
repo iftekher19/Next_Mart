@@ -1,5 +1,5 @@
 "use client"
-import ProtectedRoute from "@/src/Components/ProtectedRoute"
+import ProtectedRoute from "../../Components/ProtectedRoute"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
