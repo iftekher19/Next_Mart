@@ -10,6 +10,14 @@ import { Toaster } from "react-hot-toast"
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <title>NextMart</title>
+        <meta
+          name="description"
+          content="NextMart – your one-stop destination for quality digital products and premium gadgets, delivered instantly."
+        />
+        <link rel="icon" href="/nextmart.png" />
+      </head>
       <body>
         <SessionProvider>
           <Navbar />
