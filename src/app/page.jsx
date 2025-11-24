@@ -1,10 +1,36 @@
 "use client";
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  // --- State for products section ---
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // --- Fetch product data once on mount ---
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/products");
+        if (!res.ok) throw new Error("Failed to fetch products");
+        const data = await res.json();
+        setProducts(data);
+      } catch {
+        setError("Could not load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // ------------------------------------------------------------------
+  // HOME PAGE
+  // ------------------------------------------------------------------
   return (
     <main className="text-gray-800">
 
-      {/*  HERO SECTION */}
+      {/* HERO SECTION */}
       <section
         className="relative flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white"
       >
@@ -16,7 +42,7 @@ export default function HomePage() {
           and unbeatable deals — delivered instantly to you.
         </p>
         <a
-          href="/Products"
+          href="/product"
           className="bg-white text-gray-900 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition"
         >
           Shop Now
@@ -34,8 +60,13 @@ export default function HomePage() {
               { title: "Quality Products", desc: "All items are verified and high‑quality." },
               { title: "24/7 Support", desc: "Our friendly team is always ready to help you." },
             ].map((item, i) => (
-              <div key={i} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-                <h3 className="text-xl font-semibold text-green-600 mb-2">{item.title}</h3>
+              <div
+                key={i}
+                className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition"
+              >
+                <h3 className="text-xl font-semibold text-green-600 mb-2">
+                  {item.title}
+                </h3>
                 <p className="text-gray-600 text-sm">{item.desc}</p>
               </div>
             ))}
@@ -43,47 +74,61 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛍️ SECTION 3 – POPULAR PRODUCTS PREVIEW */}
+      {/* 🛍️ SECTION 3 – POPULAR PICKS (Powered by API) */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-10 text-green-500">Popular Picks</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((n) => (
-              <div
-                key={n}
-                className="bg-gray-50 rounded-lg overflow-hidden shadow hover:shadow-lg transition"
-              >
-                <img
-                  src={`https://picsum.photos/seed/prod${n}/400/250`}
-                  alt={`Product ${n}`}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <h3 className="font-semibold text-lg mb-1">Product {n}</h3>
-                  <p className="text-sm text-gray-600 mb-3">
-                    High‑quality digital item provided instantly.
-                  </p>
-                  <a
-                    href="/Products"
-                    className="text-green-600 font-medium hover:underline"
+
+          {loading && (
+            <p className="text-gray-500 text-lg">Loading products…</p>
+          )}
+
+          {error && (
+            <p className="text-red-500 text-lg">{error}</p>
+          )}
+
+          {!loading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {Array.isArray(products) &&
+                products.slice(0, 3).map((p) => (
+                  <div
+                    key={p._id}
+                    className="bg-gray-50 rounded-lg overflow-hidden shadow hover:shadow-lg transition"
                   >
-                    View Details →
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
+                    <img
+                      src={p.imageUrl}
+                      alt={p.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-5">
+                      <h3 className="font-semibold text-lg mb-1">{p.title}</h3>
+                      <p className="text-sm text-gray-600 mb-3">
+                        {p.shortDescription}
+                      </p>
+                      <a
+                        href={`/product/${p._id}`}
+                        className="text-green-600 font-medium hover:underline"
+                      >
+                        View Details →
+                      </a>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* 💬 SECTION 4 – TESTIMONIALS */}
       <section className="py-20 bg-gradient-to-r from-green-100 to-green-100">
         <div className="max-w-5xl mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-10 text-green-600">What Our Customers Say</h2>
+          <h2 className="text-3xl font-bold mb-10 text-green-600">
+            What Our Customers Say
+          </h2>
           <div className="grid md:grid-cols-3 gap-6 text-green-600">
             {[
               { name: "Rahim", review: "Fantastic platform! Super fast downloads and great prices." },
-              { name: "Karim", review: "Everything worked perfectly.The support team rocks!" },
+              { name: "Karim", review: "Everything worked perfectly. The support team rocks!" },
               { name: "Dulal", review: "Amazing UX and smooth Google login experience." },
             ].map((t, i) => (
               <div
@@ -99,11 +144,9 @@ export default function HomePage() {
       </section>
 
       {/* 🖼️ SECTION 5 – BANNER CTA */}
-      <section
-        className="py-20 text-center text-white bg-gradient-to-r from-lime-600 via-emerald-600 to-teal-500"
-      >
+      <section className="py-20 text-center text-white bg-gradient-to-r from-lime-600 via-emerald-600 to-teal-500">
         <h2 className="text-4xl font-bold mb-3 drop-shadow-md">
-          Ready to Experience NextMart?
+          Ready to Experience NextMart?
         </h2>
         <p className="text-lg mb-6 opacity-90">
           Join thousands of happy customers nationwide.
@@ -112,19 +155,21 @@ export default function HomePage() {
           href="/login"
           className="bg-white text-gray-900 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition"
         >
-          Get Started →
+          Get Started →
         </a>
       </section>
 
-      {/* 🌿 ABOUT SECTION */}
-      <section className="relative py-24  bg-green-100  text-center">
-        <div className="max-w-4xl  mx-auto px-6">
-          <h2 className="text-4xl text-green-800  font-bold mb-6">About NextMart</h2>
+      {/* 🌿 ABOUT SECTION */}
+      <section className="relative py-24  bg-green-100 text-center">
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-4xl text-green-800  font-bold mb-6">
+            About NextMart
+          </h2>
           <p className="text-lg opacity-90 leading-relaxed">
-            Welcome to NextMart — your one-stop destination for quality digital products,
-            premium gadgets, and unbeatable deals delivered instantly to you. We connect innovation,
-            convenience, and trust to bring you the best online shopping experience for the digital age.
-            From smart tech to software essentials, NextMart makes finding what you need simple, secure, and fast.
+            Welcome to NextMart — your one‑stop destination for quality digital products,
+            premium gadgets and unbeatable deals delivered instantly to you.
+            We connect innovation, convenience and trust to bring you the best online shopping experience
+            for the digital age. From smart tech to software essentials, NextMart makes finding what you need simple, secure and fast.
           </p>
           <div className="mt-10">
             <a
@@ -136,7 +181,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Subtle curved separator at bottom */}
+        {/* Bottom wave separator */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0]">
           <svg
             className="relative block w-full h-[60px] text-gray-50"
@@ -149,8 +194,6 @@ export default function HomePage() {
           </svg>
         </div>
       </section>
-
-
     </main>
   );
 }

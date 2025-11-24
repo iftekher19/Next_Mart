@@ -18,7 +18,7 @@ export default function Navbar() {
         <div className="flex items-center gap-6 font-medium">
           <Link href="/" className="hover:text-lime-300 transition">Home</Link>
           <Link href="/About" className="hover:text-lime-300 transition">About</Link>
-          <Link href="/Products" className="hover:text-lime-300 transition">Products</Link>
+          <Link href="/product" className="hover:text-lime-300 transition">Products</Link>
           {user && (
             <>
               <Link href="/AddProduct" className="hover:text-lime-300 transition">Add</Link>
