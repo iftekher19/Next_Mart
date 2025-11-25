@@ -45,8 +45,7 @@ npm run dev
 App will be available at:
    http://localhost:3000
 
-
-**Route Summary**
+##Route Summary
 Route	Description	Access
 /	Hero section, Features, Products preview, Testimonials – home page	Public
 /about	Overview of NextMart’s mission & values	Public
