@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛍️ NextMart
 
-## Getting Started
+**NextMart** is your one‑stop destination for quality digital products, premium gadgets, and unbeatable deals delivered instantly.  
+We connect innovation, convenience, and trust to bring you a smarter way to shop online.  
+From tech gear to software essentials, NextMart makes finding what you need simple, secure, and fast.
 
-First, run the development server:
+---
 
+## 🚀 Tech Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Styling:** Tailwind CSS 3  
+- **Authentication:** Firebase Auth (Google + Email/Password)  
+- **UI Enhancements:** React Toastify + React Hot Toast for notifications  
+- **Carousel:** Swiper JS 12  
+- **HTTP Client:** Axios  
+- **State Handling / Hooks:** React 19 hooks  
+- **Deployment:** Vercel  
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1️⃣ Clone the repository
 ```bash
+git clone https://github.com/yourusername/next-mart.git
+cd next-mart
+2️⃣ Install dependencies
+npm install
+3️⃣ Configure Firebase
+Create a project in Firebase Console,
+enable Email/Password and Google sign‑in, then add your credentials to a local environment file:
+.env.local
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_auth_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_API_URL=https://your-deployed-backend.vercel.app
+
+4️⃣ Run locally
+Bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+App will be available at:
+   http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Route Summary**
+Route	Description	Access
+/	Hero section, Features, Products preview, Testimonials – home page	Public
+/about	Overview of NextMart’s mission & values	Public
+/product	Product list page (fetched from backend API or Firebase)	Public
+/product/[id]	Individual product details	Public
+/login	Firebase Google / Email login	Guest only
+/register	Firebase registration (page)	Guest only
+/AddProduct	Add new product via form (API POST)	Authenticated
+/ManageProducts	View / delete your added products	Authenticated
+/api/products	API route for fetching products (JSON response)	Server
+/api/auth/[...nextauth]	NextAuth /Firebase authentication integration	Server

@@ -9,7 +9,7 @@ export default function ProductDetails({ id }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/products/${id}`);
+        const res = await fetch(`https://next-mart-rho.vercel.app/products/${id}`);
         if (!res.ok) throw new Error("Failed to fetch product details");
         const data = await res.json();
         setProduct(data);

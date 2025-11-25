@@ -12,7 +12,7 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:4000/products", {
+        const res = await fetch("https://next-mart-rho.vercel.app/products", {
           method: "GET",
         });
 

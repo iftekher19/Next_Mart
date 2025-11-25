@@ -21,7 +21,7 @@ export default function AddProductPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:4000/products", {
+      const res = await fetch("https://next-mart-rho.vercel.app/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
