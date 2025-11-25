@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import app from "../../../utils/firebase";  // uses your src/lib/firebase.js
+import app from "../../../utils/firebase";  
 import { useEffect } from "react";
 
 export default function LoginPage() {
@@ -15,7 +15,6 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log("✅ Logged in user:", user);
-      // After successful login, redirect to home or dashboard
       router.push("/");
     } catch (error) {
       console.error("❌ Login failed:", error.message);
@@ -23,10 +22,9 @@ export default function LoginPage() {
     }
   };
 
-  // If you want auto‑redirect when already logged in
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) router.push("/"); // redirect home if already logged in
+      if (user) router.push("/"); 
     });
     return () => unsubscribe();
   }, [auth, router]);
@@ -34,11 +32,11 @@ export default function LoginPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 text-center w-96">
-        <h1 className="text-2xl font-bold mb-6 text-blue-600">Login to NextMart</h1>
+        <h1 className="text-2xl font-bold mb-6 text-green-600">Login to NextMart</h1>
 
         <button
           onClick={handleGoogleLogin}
-          className="flex items-center justify-center gap-3 bg-red-500 text-white w-full py-2 rounded hover:bg-red-600 transition"
+          className="flex items-center justify-center gap-3 bg-green-500 text-white w-full py-2 rounded hover:bg-red-600 transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import useUser from "../utils/useUser";  // your hook from earlier
+import useUser from "../utils/useUser";  
 
 export default function ProtectedRoute({ children }) {
   const { user, loading } = useUser();
@@ -21,6 +21,5 @@ export default function ProtectedRoute({ children }) {
     return null;
   }
 
-  // ✅ User logged‑in → show protected content
   return <>{children}</>;
 }

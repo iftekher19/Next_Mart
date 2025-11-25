@@ -1,13 +1,19 @@
 "use client";
+
 import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay, EffectFade } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
 export default function HomePage() {
-  // --- State for products section ---
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // --- Fetch product data once on mount ---
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -24,29 +30,75 @@ export default function HomePage() {
     fetchProducts();
   }, []);
 
+  // --- Swiper slides data ---
+  const heroSlides = [
+    {
+      title: "Welcome to NextMart",
+      text: "Your one-stop destination for quality digital products, premium gadgets, and unbeatable deals — delivered instantly to you.",
+      image:
+        "https://i.ibb.co.com/YTVGttkk/modern-stationary-collection-arrangement.jpg",
+    },
+    {
+      title: "Exclusive Deals Every Day",
+      text: "Shop smarter with our curated collections of trending tech and exclusive digital goods.",
+      image:
+        "https://i.ibb.co.com/xSYmymqw/hdphn.jpg",
+    },
+    {
+      title: "Fast & Easy Shopping Experience",
+      text: "Browse, buy, and enjoy seamless access to top-tier digital products and services.",
+      image:
+        "https://i.ibb.co.com/SwgQKQ9z/keyboard.jpg",
+    },
+  ];
+
   // ------------------------------------------------------------------
   // HOME PAGE
   // ------------------------------------------------------------------
   return (
     <main className="text-gray-800">
 
-      {/* HERO SECTION */}
-      <section
-        className="relative flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white"
-      >
-        <h1 className="text-5xl font-bold mb-4 drop-shadow-md">
-          Welcome to NextMart
-        </h1>
-        <p className="text-lg mb-8 max-w-2xl">
-          Your one-stop destination for quality digital products, premium gadgets,
-          and unbeatable deals — delivered instantly to you.
-        </p>
-        <a
-          href="/product"
-          className="bg-white text-gray-900 font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition"
+      {/*  HERO SECTION with Swiper */}
+      <section className="relative w-full h-[70vh]">
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay, EffectFade]}
+          navigation
+          pagination={{ clickable: true }}
+          effect="slide"
+          loop
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          className="h-full"
         >
-          Shop Now
-        </a>
+          {heroSlides.map((slide, index) => (
+            <SwiperSlide key={index}>
+              <div
+                className="relative w-full h-full flex items-center justify-center text-center text-white"
+                style={{
+                  backgroundImage: `url(${slide.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-700/70 via-teal-700/60 to-green-700/70"></div>
+
+                <div className="relative z-10 px-6 max-w-3xl">
+                  <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-xl">
+                    {slide.title}
+                  </h1>
+                  <p className="text-lg mb-8 text-gray-100 leading-relaxed">
+                    {slide.text}
+                  </p>
+                  <a
+                    href="/product"
+                    className="inline-block bg-white text-gray-900 font-semibold px-8 py-3 rounded-full hover:bg-green-200 transition"
+                  >
+                    Shop Now
+                  </a>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
       {/* SECTION 2 – FEATURES */}
@@ -74,7 +126,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🛍️ SECTION 3 – POPULAR PICKS (Powered by API) */}
+      {/* SECTION 3 – POPULAR PICKS  */}
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-10 text-green-500">Popular Picks</h2>
@@ -119,7 +171,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 💬 SECTION 4 – TESTIMONIALS */}
+      {/*  SECTION 4 – TESTIMONIALS */}
       <section className="py-20 bg-gradient-to-r from-green-100 to-green-100">
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-10 text-green-600">
@@ -127,9 +179,9 @@ export default function HomePage() {
           </h2>
           <div className="grid md:grid-cols-3 gap-6 text-green-600">
             {[
-              { name: "Rahim", review: "Fantastic platform! Super fast downloads and great prices." },
+              { name: "Rahim", review: "Fantastic platform! Super fast deliveries and great prices." },
               { name: "Karim", review: "Everything worked perfectly. The support team rocks!" },
-              { name: "Dulal", review: "Amazing UX and smooth Google login experience." },
+              { name: "Dulal", review: "Amazing all products and friendly behavior." },
             ].map((t, i) => (
               <div
                 key={i}
@@ -143,7 +195,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 🖼️ SECTION 5 – BANNER CTA */}
+      {/*  SECTION 5 – BANNER CTA */}
       <section className="py-20 text-center text-white bg-gradient-to-r from-lime-600 via-emerald-600 to-teal-500">
         <h2 className="text-4xl font-bold mb-3 drop-shadow-md">
           Ready to Experience NextMart?
@@ -159,14 +211,14 @@ export default function HomePage() {
         </a>
       </section>
 
-      {/* 🌿 ABOUT SECTION */}
-      <section className="relative py-24  bg-green-100 text-center">
+      {/*  ABOUT SECTION */}
+      <section className="relative py-24 bg-green-100 text-center">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-4xl text-green-800  font-bold mb-6">
+          <h2 className="text-4xl text-green-800 font-bold mb-6">
             About NextMart
           </h2>
           <p className="text-lg opacity-90 leading-relaxed">
-            Welcome to NextMart — your one‑stop destination for quality digital products,
+            Welcome to NextMart — your one-stop destination for quality digital products,
             premium gadgets and unbeatable deals delivered instantly to you.
             We connect innovation, convenience and trust to bring you the best online shopping experience
             for the digital age. From smart tech to software essentials, NextMart makes finding what you need simple, secure and fast.

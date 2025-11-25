@@ -67,12 +67,20 @@ export default function Navbar() {
               </div>
             </div>
           ) : (
-            <button
+            <div className="flex gap-2">
+              <button
               onClick={() => router.push("/login")}
-              className="bg-white text-emerald-700 font-medium px-4 py-1.5 rounded-full hover:bg-lime-100 transition"
+              className="bg-white  text-emerald-700 font-medium px-4 py-1.5 rounded-full hover:bg-lime-100 transition"
             >
               Login
             </button>
+            <button
+              onClick={() => router.push("/Register")}
+              className="bg-white gap-30 text-emerald-700 font-medium px-4 py-1.5 rounded-full hover:bg-lime-100 transition"
+            >
+              Signup
+            </button>
+            </div>
           )}
         </div>
       </div>

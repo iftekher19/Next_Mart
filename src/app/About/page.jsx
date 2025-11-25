@@ -7,7 +7,7 @@ export default function AboutPage() {
       <section className="relative bg-gradient-to-r from-emerald-600 via-teal-600 to-green-600 text-white py-24 px-6 text-center">
         <h1 className="text-5xl font-bold mb-4 drop-shadow-sm">About NextMart</h1>
         <p className="max-w-3xl mx-auto text-lg opacity-90">
-          Welcome to NextMart — your one‑stop destination for quality digital products,
+          Welcome to NextMart — your one-stop destination for quality digital products,
           premium gadgets, and unbeatable deals delivered instantly. We connect innovation,
           convenience and trust to bring you a smarter way to shop online. From tech gear
           to software essentials, NextMart makes finding what you need simple, secure and fast.

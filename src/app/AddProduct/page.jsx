@@ -2,6 +2,8 @@
 
 import ProtectedRoute from "../../Components/ProtectedRoute";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AddProductPage() {
   const [form, setForm] = useState({
@@ -13,26 +15,22 @@ export default function AddProductPage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     try {
       const res = await fetch("http://localhost:4000/products", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
 
       const data = await res.json();
 
       if (data.success) {
-        setMessage("Product added successfully!");
+        toast.success("✅ Product added successfully!");
         setForm({
           title: "",
           shortDescription: "",
@@ -41,24 +39,31 @@ export default function AddProductPage() {
           imageUrl: "",
         });
       } else {
-        setMessage("Failed to add product.");
+        toast.error("❌ Failed to add product.");
       }
     } catch (err) {
       console.error(err);
-      setMessage("Server error.");
+      toast.error("⚠️ Server error. Try again later.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <ProtectedRoute>
-      <div className="max-w-3xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-semibold mb-6">Add New Product</h1>
+      <div className="max-w-3xl mx-auto mt-12 bg-white p-8 rounded-lg shadow-md relative">
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="colored"
+        />
 
-        {message && (
-          <p className="mb-4 text-green-600 font-semibold">{message}</p>
-        )}
+        <h1 className="text-2xl font-semibold mb-6">Add New Product</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -66,9 +71,7 @@ export default function AddProductPage() {
             placeholder="Product Title"
             className="w-full border p-2 rounded"
             value={form.title}
-            onChange={(e) =>
-              setForm({ ...form, title: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
             required
           />
 
@@ -98,9 +101,7 @@ export default function AddProductPage() {
             placeholder="Price"
             className="w-full border p-2 rounded"
             value={form.price}
-            onChange={(e) =>
-              setForm({ ...form, price: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, price: e.target.value })}
             required
           />
 
@@ -109,16 +110,16 @@ export default function AddProductPage() {
             placeholder="Image URL"
             className="w-full border p-2 rounded"
             value={form.imageUrl}
-            onChange={(e) =>
-              setForm({ ...form, imageUrl: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
             required
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className={`bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             {loading ? "Adding..." : "Add Product"}
           </button>

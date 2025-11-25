@@ -49,7 +49,6 @@ export default function ProductDetails({ id }) {
   // Success view
   return (
     <div className="max-w-4xl mx-auto my-10 bg-white rounded-lg shadow-lg overflow-hidden">
-      {/* Product Image */}
       <div className="w-full bg-gray-50 flex justify-center items-center p-4">
         <img
           src={product.imageUrl}
@@ -60,7 +59,6 @@ export default function ProductDetails({ id }) {
 
       {/* Product Content */}
       <div className="p-6 space-y-5">
-        {/* Title + Status Badge */}
         <div className="flex justify-between items-start gap-3">
           <h1 className="text-3xl font-bold text-gray-900">
             {product.title}
@@ -75,18 +73,12 @@ export default function ProductDetails({ id }) {
             {product.status || "unknown"}
           </span>
         </div>
-
-        {/* Description */}
         <p className="text-gray-700 leading-relaxed text-base md:text-lg">
           {product.fullDescription || product.shortDescription}
         </p>
-
-        {/* Price */}
         <p className="text-2xl font-semibold text-emerald-600">
           ${product.price.toFixed(2)}
         </p>
-
-        {/* Back Link */}
         <a
           href="/product"
           className="inline-block mt-6 text-blue-600 hover:underline"
